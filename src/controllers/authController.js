@@ -25,3 +25,25 @@ export async function signUp(req,res) {
         return res.status(500).send(error.message);
     }
 }
+
+export async function signIn(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        const invalidUser = await db.collection("users").findOne({ email });
+
+        if (!invalidUser) {
+            return res.status(404).send("Email não registrado");
+        }
+
+        if (bcrypt.compareSync(password, invalidUser.password)) {
+            const token = uuidv4();
+            await db.collection("sessions").insertOne({ email: invalidUser.email, token });
+
+            return res.status(200).send(token);
+        }
+        return res.status(401).send("Senha incorreta");
+    } catch(error) {
+        return res.status(500).send(error.message);
+    }
+}
