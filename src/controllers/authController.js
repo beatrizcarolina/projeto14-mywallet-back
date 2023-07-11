@@ -40,6 +40,8 @@ export async function signIn(req, res) {
             const token = uuidv4();
             await db.collection("sessions").insertOne({ email: invalidUser.email, token });
 
+            console.log(token);
+
             return res.status(200).send(token);
         }
         return res.status(401).send("Senha incorreta");
