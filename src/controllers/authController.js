@@ -47,3 +47,17 @@ export async function signIn(req, res) {
         return res.status(500).send(error.message);
     }
 }
+
+export async function signOut(req, res) {
+    const { token } = res.locals.session;
+
+    console.log("SignoUt: " + token);
+
+    try {
+        await db.collection("sessions").deleteOne({ token });
+        return res.sendStatus(204);
+    } catch (error) {
+        console.log("Error: " + error);
+        return res.status(500).send(error.message);
+    }
+}
