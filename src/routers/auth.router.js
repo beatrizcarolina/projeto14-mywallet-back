@@ -7,6 +7,6 @@ import { authentication } from "../middlewares/authValidation.js";
 const authRouter = Router();
 authRouter.post("/cadastro", schemaValidation(signUpSchema), signUp);
 authRouter.post("/", schemaValidation(signInSchema), signIn);
-authRouter.delete("/signout", authentication, signOut);
+authRouter.post("/signout", authentication, signOut);
 
 export default authRouter;
